@@ -18,7 +18,7 @@ POST :/users
 | email | String | 이메일 주소 |
 | is_receive_notification | Boolean | 알림 설정 여부 |
 | is_admin | Boolean | 관리자 여부 |
-| profile | Boolean | 프로필 사진 저장 경로 |
+| profile | String | 프로필 사진 저장 경로 |
 
 #### 1.1.3. Response
 | Parameter |  Type  | Description |
@@ -34,7 +34,7 @@ POST :/users
 
 ### 1.2. 사용자 로그인 (토큰 발급)  
 #### 1.2.1. URL
-POST: /users/login
+POST: /users/login/{userId}/{password}
 
 #### 1.2.2. Request
 | Parameter |  Type  | Description |
@@ -45,8 +45,8 @@ POST: /users/login
 #### 1.2.3. Response
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| refresh | String | 갱신을 위한 토큰 |
-| access | String | 인증을 위한 토큰 |
+| refreshToken | String | 갱신을 위한 토큰 |
+| accessToken | String | 인증을 위한 토큰 |
 
 #### 1.2.4. Http code
 - 201 : Created 
@@ -55,17 +55,17 @@ POST: /users/login
 
 ### 1.3. 사용자 로그인 (토큰 갱신)  
 #### 1.3.1. URL
-PATCH :/users/login/refreshment
+PATCH :/users/login/refreshment/{refreshToken}/{accessToken}
 
 #### 1.3.2. Request
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| refresh | String | 갱신을 위한 토큰 |
+| refreshToken | String | 갱신을 위한 토큰 |
 
 #### 1.3.3. Response
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| access | String | 인증을 위한 토큰 |
+| accessToken | String | 인증을 위한 토큰 |
 
 #### 1.3.4. Http code
 - 201 : Created 
@@ -73,19 +73,19 @@ PATCH :/users/login/refreshment
 
 ### 1.4. 사용자 로그인 (토큰 검증)  
 #### 1.4.1. URL
-POST: /users/login/verification
+POST: /users/login/verification/{accessToken}
 
 #### 1.4.2. Request
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| access | String | 인증을 위한 토큰 |
+| accessToken | String | 인증을 위한 토큰 |
 
 #### 1.4.3. Response
 없음
 
 #### 1.4.4. Http code
 - 201 : Created 
-- 400 : Bad Request (애초에 parameter를 잘못 전달하거나 없는 경우)$
+- 400 : Bad Request (애초에 parameter를 잘못 전달하거나 없는 경우)
 - 401 : Unauthorized (로그인 실패)
 
 ### 1.5. 사용자 탈퇴 
@@ -126,7 +126,7 @@ PATCH: /users/{userId}
 
 ### 1.7. 사용자 프로필 추가, 수정, 삭제
 #### 1.7.1 URL
-PATCH :/users/profile/{userId}
+PATCH :/users/{userId}/{profile}
 
 #### 1.7.2. Request
 | Parameter |  Type  | Description |
@@ -143,10 +143,10 @@ PATCH :/users/profile/{userId}
 
 ### 1.8. 사용자 리스트 조회 (admin만 가능)
 #### 1.8.1. URL
-GET :/users/list
+GET :/users/list/{userId}
 
 #### 1.8.2. Request
-userid가 없을 경우 모든 data 반환
+userId가 없을 경우 모든 data 반환
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
 | userId | String | 회원 아이디 |
@@ -167,7 +167,7 @@ userid가 없을 경우 모든 data 반환
 
 ### 1.9. 팔로잉 및 팔로워 추가
 #### 1.9.1. URL
-PUT :/follow
+PUT :/follow/{followedId}/{followingId}
 
 #### 1.9.2. Request
 | Parameter |  Type  | Description |
