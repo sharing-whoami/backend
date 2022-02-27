@@ -4,7 +4,7 @@
 # API Documentation
 ## 1. USER
 ### 1.1. 사용자 회원가입
-#### 1.1.1. Url
+#### 1.1.1. URL
 POST :/users
 
 #### 1.1.2. Request
