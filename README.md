@@ -9,10 +9,10 @@
 ### 2.1. 답변 조회
 #### 2.1.1. GET /answers/list/{userId}
 #### 2.1.2. Request
-(설명 추후 작성)
-
+userId가 없을 경우 모든 data 반환
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
+| userId |  Number  | 사용자 id       |
 
 #### 2.1.3. Response
 (설명 추후 작성)
