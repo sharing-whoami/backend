@@ -22,6 +22,7 @@ public class MemberService { //implements UserDetailsService {
     // 회원가입
     public Long joinMember(MembersSaveRequestDto requestDto){
         validateDuplicateMember(requestDto); // 중복 회원 검증
+
         return membersRepository.save(requestDto.toEntity()).getId();
 //
 //        public Long joinMember(MembersSaveRequestDto requestDto){
@@ -29,6 +30,7 @@ public class MemberService { //implements UserDetailsService {
 //            return membersRepository.save(requestDto.toEntity()).getId();
 //        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
 //        membersDto.setPassword(encoder.encode(membersDto.getPassword()));
+
     }
 
     // 회원가입 아이디 중복체크
@@ -39,6 +41,7 @@ public class MemberService { //implements UserDetailsService {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
+
 
     // 회원 조회
     @Transactional
@@ -56,4 +59,5 @@ public class MemberService { //implements UserDetailsService {
         members.update(requestDto.getPassword(),requestDto.getPhoneNum(),requestDto.getEmail(),requestDto.isReceiveNotification());
         return id;
     }
+
 }
