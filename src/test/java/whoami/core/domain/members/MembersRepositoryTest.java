@@ -50,6 +50,7 @@ public class MembersRepositoryTest {
         // then
         Members members=membersList.get(0);
         assertThat(members.getUserId()).isEqualTo(userId);
-        assertThat(members.getPassword()).isEqualTo(password);
+        assertThat(members.getEmail()).isEqualTo(email);
+        assertThat(members.getName()).isEqualTo(name);
     }
 }
