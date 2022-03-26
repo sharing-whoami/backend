@@ -432,15 +432,15 @@ userId가 없을 경우 모든 data 반환
 ## 3. QUESTION
 ### 3.1. 날짜별 질문 조회
 #### 3.1.1. Url
-GET : /question/{startDate}/{endDate}
+GET : /question?startDate=2022-01-01&endDate=2022-03-10
  
 #### 3.1.2. Request  
 startDate와 endDate가 없을 경우 모든 data 반환
 
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| startDate | Datetime | 검색 날짜 시작일   |
-| endDate   | Datetime | 검색 날짜 마지막일  |
+| startDate | String | 검색 날짜 시작일   |
+| endDate   | String | 검색 날짜 마지막일  |
 
 #### 3.1.3. Response  
 data의 배열  
@@ -522,15 +522,16 @@ PATCH : /question/{questionId}
 ## 4. GUEST BOOK
 ### 4.1. 방명록 조회 
 #### 4.1.1. Url
-GET : /guestbook/{startDate}/{endDate}
+GET : /guestbook?startDate=2022-01-01&endDate=2022-03-10
+
 
 #### 4.1.2. Request
 startDate와 endDate가 없을 경우 모든 data 반환
 
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
-| startDate | Datetime | 검색 날짜 시작일   |
-| endDate   | Datetime | 검색 날짜 마지막일  |
+| startDate | String | 검색 날짜 시작일   |
+| endDate   | String | 검색 날짜 마지막일  |
 
 #### 4.1.3. Response
 data의 배열
