@@ -1,4 +1,4 @@
-package whoami.core.dto;
+package whoami.core.dto.members;
 
 import lombok.Getter;
 import whoami.core.domain.members.Members;

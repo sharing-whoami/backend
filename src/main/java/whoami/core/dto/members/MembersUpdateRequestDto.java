@@ -1,10 +1,9 @@
-package whoami.core.dto;
+package whoami.core.dto.members;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @Setter
@@ -18,13 +17,9 @@ public class MembersUpdateRequestDto {
 
     @Builder
     public MembersUpdateRequestDto(String password, String phoneNum, String email, boolean isReceiveNotification) {
-        this.password =  bCryptPasswordEncoder(password);
+        this.password =  password;
         this.phoneNum = phoneNum;
         this.email = email;
         this.isReceiveNotification = isReceiveNotification;
-    }
-    private String bCryptPasswordEncoder(String password) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder.encode(password);
     }
 }

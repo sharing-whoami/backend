@@ -1,10 +1,7 @@
 package whoami.core.domain;
 
-import lombok.*;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 
 @AllArgsConstructor

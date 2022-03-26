@@ -1,11 +1,11 @@
-package whoami.core.dto;
+package whoami.core.dto.members;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import whoami.core.domain.Role;
 import whoami.core.domain.members.Members;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Getter
@@ -25,7 +25,7 @@ public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 �
     @Builder
     public MembersSaveRequestDto(String userId, String password, String name, String registryNum, String phoneNum, String email, boolean isReceiveNotification, String role, String profile) {
         this.userId = userId;
-        this.password = bCryptPasswordEncoder(password);
+        this.password = password;
         this.name = name;
         this.registryNum = registryNum;
         this.phoneNum = phoneNum;
@@ -35,10 +35,10 @@ public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 �
         this.profile = profile;
     }
 
-    private String bCryptPasswordEncoder(String password) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder.encode(password);
-    }
+//    private String bCryptPasswordEncoder(String password) {
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//        return bCryptPasswordEncoder.encode(password);
+//    }
 
     // dto인 MembersSaveRequestDto의 객체를 Members의 Entity 객체로 변환하기 위한 메서드
     public Members toEntity(){
@@ -50,7 +50,7 @@ public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 �
                 .phoneNum(phoneNum)
                 .email(email)
                 .isReceiveNotification(isReceiveNotification)
-                .role(role)
+                .role(Role.USER.getValue())
                 .profile(profile)
                 .build();
     }

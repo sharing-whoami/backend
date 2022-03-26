@@ -1,16 +1,12 @@
 package whoami.core.domain.members;
 
-
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 
 @Getter
@@ -19,12 +15,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
 @EqualsAndHashCode(of = "userId")
 @Table(name="user")
-public class Members{
+public class Members implements UserDetails { //SpringSecurity는 UserDetails 객체를 통해 권한 정보를 관리
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true,name="user_id")
     private String userId;
 
     @Column(nullable = false)
@@ -52,8 +48,7 @@ public class Members{
     private String profile;
 
     @Builder
-    public Members(Long id, String userId, String password, String name, String registryNum, String phoneNum, String email, boolean isReceiveNotification, String role, String profile) {
-        this.id = id;
+    public Members(String userId, String password, String name, String registryNum, String phoneNum, String email, boolean isReceiveNotification, String role, String profile) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -66,20 +61,50 @@ public class Members{
     }
 
     public void update(String password,String phoneNum,String email,boolean isReceiveNotification){
-        this.password=bCryptPasswordEncoder(password);
+        this.password=password;
         this.phoneNum=phoneNum;
         this.email=email;
         this.isReceiveNotification=isReceiveNotification;
-    }
-
-    private String bCryptPasswordEncoder(String password) {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder.encode(password);
     }
 
     public void profileUpdate(String profile){
         this.profile=profile;
     }
 
+    // 유저의 권한 목록
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> collectors = new ArrayList<>();
+        collectors.add(() -> "ROLE_"+getRole());
+        return collectors;
+    }
 
+    @Override
+    public String getUsername() {
+        return getUserId();
+    }
+
+    // 계정 만료 여부
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    // 계정 잠김 여부
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    // 비밀번호 만료 여부
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    // 사용자 활성화 여부
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
