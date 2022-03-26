@@ -1,2 +1,26 @@
-package whoami.core.DTO;public class AnswerListResponseDTO {
+package whoami.core.DTO;
+
+import lombok.Getter;
+import whoami.core.Domain.Answer;
+import whoami.core.Domain.Tag;
+import whoami.core.Domain.User;
+
+import java.time.OffsetDateTime;
+import java.util.Collection;
+
+@Getter
+public class AnswerListResponseDTO {
+
+    private Long answerId;                  // PK
+    private String answerContents;
+    private OffsetDateTime updatedAt;
+    private Collection<Tag> tagId;          // FK
+
+    public AnswerListResponseDTO(Answer entity){
+        this.answerId = entity.getAnswerId();
+        this.answerContents = entity.getAnswerContents();
+        this.updatedAt = entity.getUpdatedAt();
+        this.tagId = entity.getTagId();
+    }
+
 }
