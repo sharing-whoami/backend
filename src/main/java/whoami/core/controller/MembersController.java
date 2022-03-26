@@ -15,15 +15,15 @@ public class MembersController {
 
     private final MemberService memberService;
 
-    @PostMapping("/users") // 회원가입 api
+    @PostMapping("/users/signup") // 회원가입 api
     public Long joinMember(@RequestBody MembersSaveRequestDto requestDto){
         return memberService.joinMember(requestDto);
     }
 
-    @GetMapping("/users/{id}") // 회원 조회
-    public MembersResponseDto findById(@PathVariable Long id){
-        return memberService.findById(id);
-    }
+//    @GetMapping("/users/{id}") // 회원 조회
+//    public MembersResponseDto findById(@PathVariable Long id){
+//        return memberService.findById(id);
+//    }
 
     @PutMapping("/users/{id}")     // 회원 수정
     public Long update(@PathVariable Long id, @RequestBody MembersUpdateRequestDto requestDto){

@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import whoami.core.domain.Role;
+
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +32,7 @@ public class MembersRepositoryTest {
         String phoneNum="010-1111-1111";
         String email="yeon1@naver.com";
         boolean isReceiveNotification=true;
-        boolean isAdmin=false;
+        String role= Role.USER.getValue();
         String profile="1.jpg";
         membersRepository.save(Members.builder()
                 .userId(userId)
@@ -40,7 +42,7 @@ public class MembersRepositoryTest {
                 .phoneNum(phoneNum)
                 .email(email)
                 .isReceiveNotification(isReceiveNotification)
-                .isAdmin(isAdmin)
+                .role(role)
                 .profile(profile)
                 .build());
 

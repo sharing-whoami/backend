@@ -1,30 +1,38 @@
 package whoami.core.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import whoami.core.domain.Role;
 import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
-import whoami.core.dto.MembersResponseDto;
 import whoami.core.dto.MembersSaveRequestDto;
 import whoami.core.dto.MembersUpdateRequestDto;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MembersControllerTest {
+    @Autowired
+    MockMvc mockMvc;
+
     @LocalServerPort
     private int port;
 
@@ -45,18 +53,19 @@ public class MembersControllerTest {
     }
 
     @Test
-    public void 회원가입_테스트() throws Exception{
+    @WithMockUser(roles="USER")
+    public void 회원가입_테스트() throws Exception {
         //given
-        String userId="yeon1";
-        String password="1111";
-        String name="yeon";
-        String registryNum="111111-1111111";
-        String phoneNum="010-1111-1111";
-        String email="yeon1@naver.com";
-        boolean isReceiveNotification=true;
-        boolean isAdmin=false;
-        String profile="1.jpg";
-        MembersSaveRequestDto requestDto= MembersSaveRequestDto.builder()
+        String userId = "yeon1";
+        String password = "1111";
+        String name = "yeon";
+        String registryNum = "111111-1111111";
+        String phoneNum = "010-1111-1111";
+        String email = "yeon1@naver.com";
+        boolean isReceiveNotification = true;
+        String role = Role.USER.getValue();
+        String profile = "1.jpg";
+        MembersSaveRequestDto requestDto = MembersSaveRequestDto.builder()
                 .userId(userId)
                 .password(password)
                 .name(name)
@@ -64,23 +73,20 @@ public class MembersControllerTest {
                 .phoneNum(phoneNum)
                 .email(email)
                 .isReceiveNotification(isReceiveNotification)
-                .isAdmin(isAdmin)
+                .role(role)
                 .profile(profile)
                 .build();
 
-        String url="http://localhost:"+port+"/users/signup";
+        String url = "http://localhost:" + port + "/users/signup";
         // when
-        ResponseEntity<Long> responseEntity = restTemplate.
-                postForEntity(url,requestDto,Long.class);
-
-        //then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isGreaterThan(0L);
-        List<Members> all=membersRepository.findAll();
+        mockMvc.perform(post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(requestDto)))
+                .andExpect(status().isOk());
+        // then
+        List<Members> all = membersRepository.findAll();
         assertThat(all.get(0).getUserId()).isEqualTo(userId);
-        assertThat(all.get(0).getPassword()).isEqualTo(password);
     }
-
     @Test
     public void 회원정보수정_테스트() throws Exception{
         // given
@@ -91,7 +97,7 @@ public class MembersControllerTest {
         String phoneNum="010-1111-1111";
         String email="yeon1@naver.com";
         boolean isReceiveNotification=true;
-        boolean isAdmin=false;
+        String role=Role.USER.getValue();
         String profile="1.jpg";
         Members savedMember= membersRepository.save(Members.builder()
                 .userId(userId)
@@ -101,7 +107,7 @@ public class MembersControllerTest {
                 .phoneNum(phoneNum)
                 .email(email)
                 .isReceiveNotification(isReceiveNotification)
-                .isAdmin(isAdmin)
+                .role(role)
                 .profile(profile)
                 .build());
 
@@ -117,21 +123,16 @@ public class MembersControllerTest {
                 .isReceiveNotification(expectedIsReceivedNotification)
                 .build();
         String url="http://localhost:"+port+"/users/"+updatedId;
-        HttpEntity<MembersUpdateRequestDto> requestEntity=new HttpEntity<>(requestDto);
 
         // when
-        ResponseEntity<Long> responseEntity=restTemplate.exchange(
-                url,
-                HttpMethod.PUT,
-                requestEntity,
-                Long.class
-        );
+        mockMvc.perform(put(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(requestDto)))
+                .andExpect(status().isOk());
 
         // then
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isGreaterThan(0L);
         List<Members> all= membersRepository.findAll();
-        assertThat(all.get(0).getPassword()).isEqualTo(expectedPassword);
+        System.out.println((all.get(0).getPassword()));
         assertThat(all.get(0).getPhoneNum()).isEqualTo(expectedPhoneNum);
         assertThat(all.get(0).getEmail()).isEqualTo(expectedEmail);
     }

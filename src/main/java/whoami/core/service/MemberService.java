@@ -1,10 +1,12 @@
 package whoami.core.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import whoami.core.domain.Role;
 import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
 import whoami.core.dto.MembersResponseDto;
@@ -15,22 +17,17 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class MemberService { //implements UserDetailsService {
+public class MemberService {
     private final MembersRepository membersRepository;
 
     @Transactional
     // 회원가입
-    public Long joinMember(MembersSaveRequestDto requestDto){
+    public Long joinMember(MembersSaveRequestDto requestDto) {
         validateDuplicateMember(requestDto); // 중복 회원 검증
-
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        requestDto.setRole(Role.USER.getValue());
         return membersRepository.save(requestDto.toEntity()).getId();
-//
-//        public Long joinMember(MembersSaveRequestDto requestDto){
-//            validateDuplicateMember(requestDto); // 중복 회원 검증
-//            return membersRepository.save(requestDto.toEntity()).getId();
-//        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder();
-//        membersDto.setPassword(encoder.encode(membersDto.getPassword()));
-
     }
 
     // 회원가입 아이디 중복체크
@@ -41,7 +38,6 @@ public class MemberService { //implements UserDetailsService {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
-
 
     // 회원 조회
     @Transactional
@@ -56,6 +52,8 @@ public class MemberService { //implements UserDetailsService {
     public Long update(Long id, MembersUpdateRequestDto requestDto){
         Members members=membersRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("해당 게시글이 없습니다. id="+id));
+
+
         members.update(requestDto.getPassword(),requestDto.getPhoneNum(),requestDto.getEmail(),requestDto.isReceiveNotification());
         return id;
     }

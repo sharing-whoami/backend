@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	// implementation 'org.springframework.boot:spring-boot-starter-security' // Springboot Security
+	implementation 'org.springframework.boot:spring-boot-starter-security' // Springboot Security
 	implementation 'junit:junit:4.13.2'
 	implementation 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
@@ -22,7 +22,7 @@ dependencies {
 	annotationProcessor('org.projectlombok:lombok')
 	testAnnotationProcessor('org.projectlombok:lombok')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	// testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 	// JPA - MySQL 연동
    implementation 'mysql:mysql-connector-java'
    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
