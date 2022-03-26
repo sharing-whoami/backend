@@ -21,7 +21,7 @@ import java.util.Optional;
 public class MemberService implements UserDetailsService {
     private final MembersRepository membersRepository;
 
-    // 스프링시큐리티에서 유저를 찾는 메소드
+    // 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return membersRepository.findByUserId(username)
@@ -35,7 +35,7 @@ public class MemberService implements UserDetailsService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         requestDto.setRole(Role.USER.getValue());
-        return membersRepository.save(requestDto.toEntity()).getId();
+        return membersRepository.save(requestDto.toEntity()).getMemberId();
     }
 
     // 회원 조회
@@ -55,7 +55,7 @@ public class MemberService implements UserDetailsService {
         return id;
     }
 
-//     회원가입 아이디 중복체크
+    // 회원가입 아이디 중복체크
     @Transactional
     public void validateDuplicateMember(MembersSaveRequestDto membersDto){
         Optional<Members> findMember=membersRepository.findByUserId(membersDto.getUserId());

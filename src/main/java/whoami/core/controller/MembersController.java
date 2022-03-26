@@ -32,7 +32,7 @@ public class MembersController {
                 .email(user.get("email"))
                 .role(user.get("role"))
                 .profile(user.get("profile"))
-                .build()).getId();
+                .build()).getMemberId();
     }
 
     // 로그인
