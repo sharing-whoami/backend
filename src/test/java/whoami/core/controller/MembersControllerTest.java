@@ -72,15 +72,15 @@ public class MembersControllerTest {
     @WithMockUser(roles = "USER")
     public void 회원가입_테스트() throws Exception {
         //given
-        String userId = "yeon1";
-        String password = "1111";
-        String name = "yeon";
+        String userId = "yeon2";
+        String password = "2222";
+        String name = "yeon2";
         String registryNum = "111111-1111111";
         String phoneNum = "010-1111-1111";
-        String email = "yeon1@naver.com";
+        String email = "yeon2@naver.com";
         boolean isReceiveNotification = true;
         String role = Role.USER.getValue();
-        String profile = "1.jpg";
+        String profile = "2.jpg";
         MembersSaveRequestDto requestDto = MembersSaveRequestDto.builder()
                 .userId(userId)
                 .password(password)
@@ -101,7 +101,7 @@ public class MembersControllerTest {
                 .andExpect(status().isOk());
         // then
         List<Members> all = membersRepository.findAll();
-        assertThat(all.get(0).getUserId()).isEqualTo(userId);
+        assertThat(all.get(1).getUserId()).isEqualTo(userId);
 
     }
 

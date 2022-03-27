@@ -14,11 +14,12 @@ import java.util.Collection;
 // jpa의 entity 및 column은 자동으로 camel case -> DB의 snake_case에 매칭시켜줌
 @NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
 @EqualsAndHashCode(of = "userId")
-@Table(name="user")
+@Table(name="members")
 public class Members implements UserDetails { //SpringSecurity는 UserDetails 객체를 통해 권한 정보를 관리
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="member_id")
+    private Long memberId;
 
     @Column(nullable = false, unique = true,name="user_id")
     private String userId;

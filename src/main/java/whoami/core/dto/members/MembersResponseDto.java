@@ -12,7 +12,7 @@ public class MembersResponseDto { // Entity 객체를 DTO로 변환해서 응답
     private String email;
 
     public MembersResponseDto(Members entity){
-        this.id=entity.getId();
+        this.id=entity.getMemberId();
         this.userId = entity.getUserId();
         this.name = entity.getName();
         this.email = entity.getEmail();

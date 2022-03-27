@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
+import whoami.core.dto.members.MembersSaveRequestDto;
 import whoami.core.security.JwtTokenProvider;
+import whoami.core.service.MemberService;
 
 import java.util.Map;
 
@@ -19,23 +21,18 @@ public class MembersController {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MembersRepository membersRepository;
+    private final MemberService memberService;
 
-    // 회원가입
+    // 회원가입 완료
     @PostMapping("/users/signup") // 회원가입 api
-    public Long joinMember(@RequestBody Map<String, String> user){
-        return membersRepository.save(Members.builder()
-                .userId(user.get("userId"))
-                .password(user.get("password"))
-                .name(user.get("name"))
-                .registryNum(user.get("registryNum"))
-                .phoneNum(user.get("phoneNum"))
-                .email(user.get("email"))
-                .role(user.get("role"))
-                .profile(user.get("profile"))
-                .build()).getId();
+    public String joinMember(@RequestBody MembersSaveRequestDto requestDto){
+        if (memberService.joinMember(requestDto)!=null){
+            return "회원가입 완료"; // return "redirect:/login"; -> 페이지 이동
+        }
+            return "중복되는 아이디가 있습니다."; // return "redirect:/users/signup"; -> 페이지 이동
     }
 
-    // 로그인
+    // 로그인 완료 -> 동작 확인함.
     @PostMapping("/login")
     public String login(@RequestBody Map<String, String> user) {
         Members member = membersRepository.findByUserId(user.get("userId"))

@@ -14,8 +14,6 @@ import whoami.core.dto.members.MembersResponseDto;
 import whoami.core.dto.members.MembersSaveRequestDto;
 import whoami.core.dto.members.MembersUpdateRequestDto;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class MemberService implements UserDetailsService {
@@ -28,14 +26,18 @@ public class MemberService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-    // 회원가입
+    // 회원가입 처리
     @Transactional
     public Long joinMember(MembersSaveRequestDto requestDto) {
-        validateDuplicateMember(requestDto); // 중복 회원 검증
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
-        requestDto.setRole(Role.USER.getValue());
-        return membersRepository.save(requestDto.toEntity()).getId();
+        // 중복 회원 검증
+        if (!validateDuplicateMember(requestDto)){
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+            requestDto.setRole(Role.USER.getValue());
+            return membersRepository.save(requestDto.toEntity()).getMemberId();
+        }
+
+        return null;
     }
 
     // 회원 조회
@@ -57,11 +59,8 @@ public class MemberService implements UserDetailsService {
 
 //     회원가입 아이디 중복체크
     @Transactional
-    public void validateDuplicateMember(MembersSaveRequestDto membersDto){
-        Optional<Members> findMember=membersRepository.findByUserId(membersDto.getUserId());
-        if (findMember.isPresent()){
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
+    public boolean validateDuplicateMember(MembersSaveRequestDto membersDto){
+       return membersRepository.existsByUserId(membersDto.getUserId());
     }
 
 }
