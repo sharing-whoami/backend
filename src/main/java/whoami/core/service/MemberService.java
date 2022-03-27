@@ -19,7 +19,7 @@ import whoami.core.dto.members.MembersUpdateRequestDto;
 public class MemberService implements UserDetailsService {
     private final MembersRepository membersRepository;
 
-    // 스프링시큐리티에서 유저를 찾는 메소드
+    // 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return membersRepository.findByUserId(username)
@@ -30,13 +30,12 @@ public class MemberService implements UserDetailsService {
     @Transactional
     public Long joinMember(MembersSaveRequestDto requestDto) {
         // 중복 회원 검증
-        if (!validateDuplicateMember(requestDto)){
+        if (!validateDuplicateMember(requestDto)) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
             requestDto.setRole(Role.USER.getValue());
             return membersRepository.save(requestDto.toEntity()).getMemberId();
         }
-
         return null;
     }
 
@@ -57,7 +56,7 @@ public class MemberService implements UserDetailsService {
         return id;
     }
 
-//     회원가입 아이디 중복체크
+    // 회원가입 아이디 중복체크
     @Transactional
     public boolean validateDuplicateMember(MembersSaveRequestDto membersDto){
        return membersRepository.existsByUserId(membersDto.getUserId());

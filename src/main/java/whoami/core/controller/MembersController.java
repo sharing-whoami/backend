@@ -25,11 +25,11 @@ public class MembersController {
 
     // 회원가입 완료
     @PostMapping("/users/signup") // 회원가입 api
-    public String joinMember(@RequestBody MembersSaveRequestDto requestDto){
-        if (memberService.joinMember(requestDto)!=null){
+    public String joinMember(@RequestBody MembersSaveRequestDto requestDto) {
+        if (memberService.joinMember(requestDto) != null) {
             return "회원가입 완료"; // return "redirect:/login"; -> 페이지 이동
         }
-            return "중복되는 아이디가 있습니다."; // return "redirect:/users/signup"; -> 페이지 이동
+        return "중복되는 아이디가 있습니다."; // return "redirect:/users/signup"; -> 페이지 이동
     }
 
     // 로그인 완료 -> 동작 확인함.
