@@ -166,6 +166,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+application.properties
 .idea/
 .gradle/
 build/

@@ -22,6 +22,7 @@ public class MemberService implements UserDetailsService {
     // 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println("username : "+username);
         return membersRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }

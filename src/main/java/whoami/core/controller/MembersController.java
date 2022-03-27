@@ -10,8 +10,13 @@ import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
 import whoami.core.dto.members.MembersSaveRequestDto;
 import whoami.core.security.JwtTokenProvider;
+import whoami.core.service.ExpiredRefreshTokenService;
 import whoami.core.service.MemberService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -22,6 +27,7 @@ public class MembersController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MembersRepository membersRepository;
     private final MemberService memberService;
+    private final ExpiredRefreshTokenService expiredRefreshTokenService;
 
     // 회원가입 완료
     @PostMapping("/users/signup") // 회원가입 api
@@ -34,14 +40,30 @@ public class MembersController {
 
     // 로그인 완료 -> 동작 확인함.
     @PostMapping("/login")
-    public String login(@RequestBody Map<String, String> user) {
+    public Map<String, Object> login(@RequestBody Map<String, String> user, HttpServletRequest request,
+                        HttpServletResponse response) {
         Members member = membersRepository.findByUserId(user.get("userId"))
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 회원아이디 입니다."));
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(member.getUserId(), member.getRole());
+        String expiredToken = jwtTokenProvider.resolveRefreshToken(request);
+        if (expiredToken != null && !expiredToken.isBlank()) {
+            expiredRefreshTokenService.addExpiredToken(expiredToken);
+        }
+
+        String accessToken = jwtTokenProvider.createToken(user.get("userId"), user.get("role"));
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.get("userId"), user.get("role"));
+
+        Cookie refreshTokenCookie = new Cookie("refresh-token", refreshToken);
+        response.setHeader("access-token", accessToken);
+        response.addCookie(refreshTokenCookie);
+        Map<String, Object> map = new HashMap<>();
+        map.put("acToken", accessToken);
+        map.put("rfToken", refreshToken);
+        return map;
     }
+}
 //    private final MemberService memberService;
 //
 //    @PostMapping("/users/signup") // 회원가입 api
@@ -60,4 +82,4 @@ public class MembersController {
 //    }
 
 
-}
+
