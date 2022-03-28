@@ -49,20 +49,36 @@ public class MembersController {
         }
         String expiredToken = jwtTokenProvider.resolveRefreshToken(request);
         if (expiredToken != null && !expiredToken.isBlank()) {
+            System.out.println("만료된 토큰 : "+ expiredToken);
             expiredRefreshTokenService.addExpiredToken(expiredToken);
         }
 
-        String accessToken = jwtTokenProvider.createToken(user.get("userId"), user.get("role"));
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.get("userId"), user.get("role"));
+        String accessToken = jwtTokenProvider.createToken(member.getUsername(), member.getRole());
+        String refreshToken = jwtTokenProvider.createRefreshToken(member.getUsername(), member.getRole());
 
         Cookie refreshTokenCookie = new Cookie("refresh-token", refreshToken);
         response.setHeader("access-token", accessToken);
         response.addCookie(refreshTokenCookie);
         Map<String, Object> map = new HashMap<>();
-        map.put("acToken", accessToken);
-        map.put("rfToken", refreshToken);
+        map.put("accessToken", accessToken);
+        map.put("refreshToken",refreshToken);
         return map;
+
     }
+    @PostMapping("/users/test")
+    public Map userResponseTest() {
+        Map<String, String> result = new HashMap<>();
+        result.put("result","user ok");
+        return result;
+    }
+
+    @PostMapping("/admin/test")
+    public Map adminResponseTest() {
+        Map<String, String> result = new HashMap<>();
+        result.put("result","admin ok");
+        return result;
+    }
+
 }
 //    private final MemberService memberService;
 //

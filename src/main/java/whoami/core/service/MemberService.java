@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import whoami.core.domain.Role;
 import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
-import whoami.core.dto.members.MembersResponseDto;
 import whoami.core.dto.members.MembersSaveRequestDto;
 import whoami.core.dto.members.MembersUpdateRequestDto;
 
@@ -22,9 +21,8 @@ public class MemberService implements UserDetailsService {
     // 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("username : "+username);
         return membersRepository.findByUserId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.1"));
     }
 
     // 회원가입 처리
@@ -42,10 +40,10 @@ public class MemberService implements UserDetailsService {
 
     // 회원 조회
     @Transactional
-    public MembersResponseDto findById(Long id){
+    public Members findById(Long id){
         Members entity=membersRepository.findById(id)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다. id="+id));
-        return new MembersResponseDto(entity);
+        return entity;
     }
 
     // 회원 정보 수정
@@ -62,5 +60,4 @@ public class MemberService implements UserDetailsService {
     public boolean validateDuplicateMember(MembersSaveRequestDto membersDto){
        return membersRepository.existsByUserId(membersDto.getUserId());
     }
-
 }
