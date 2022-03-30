@@ -27,14 +27,14 @@ public class MemberService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final RedisService redisService;
 
-    // 스프링 시큐리티에서 유저를 찾는 메소드
+    // NOTE : 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return membersRepository.findByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다.1"));
     }
 
-    // 회원가입 처리
+    // NOTE : 회원가입 처리
     @Transactional
     public Long joinMember(MembersSaveRequestDto requestDto) {
         // 중복 회원 검증
@@ -47,7 +47,7 @@ public class MemberService implements UserDetailsService {
         return null;
     }
 
-    // 로그인
+    // NOTE : 로그인
     public LoginResponseDto loginUser(LoginRequestDto loginRequestDto) {
         Optional<Members> members = membersRepository.findByUserId(loginRequestDto.getUserId());
         System.out.println(loginRequestDto.getUserId()+"hello");
@@ -60,14 +60,14 @@ public class MemberService implements UserDetailsService {
         }
         String accessToken = jwtTokenProvider.createToken(loginRequestDto.getUserId(),loginRequestDto.getPassword());
         String refreshToken=jwtTokenProvider.createRefreshToken(loginRequestDto.getUserId(),loginRequestDto.getPassword());
-        // refreshToken db에 저장하는 곳!!
+
+        // refreshToken redis db에 저장
         redisService.setValues(refreshToken, loginRequestDto.getUserId());
         return new LoginResponseDto(accessToken,refreshToken);
     }
 
-    // 로그아웃
 
-    // 회원 조회
+    // FIXME : 회원 조회
     @Transactional
     public Members findById(Long id){
         Members entity=membersRepository.findById(id)
@@ -75,7 +75,7 @@ public class MemberService implements UserDetailsService {
         return entity;
     }
 
-    // 회원 정보 수정
+    // FIXME : 회원 정보 수정
     @Transactional
     public Long update(Long id, MembersUpdateRequestDto requestDto){
         Members members=membersRepository.findById(id)
@@ -84,7 +84,7 @@ public class MemberService implements UserDetailsService {
         return id;
     }
 
-    // 회원가입 아이디 중복체크
+    // FIXME : 회원가입 아이디 중복체크
     @Transactional
     public boolean validateDuplicateMember(MembersSaveRequestDto membersDto){
        return membersRepository.existsByUserId(membersDto.getUserId());

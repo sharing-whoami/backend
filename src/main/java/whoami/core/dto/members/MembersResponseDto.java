@@ -4,7 +4,7 @@ import lombok.Getter;
 import whoami.core.domain.members.Members;
 
 @Getter
-public class MembersResponseDto { // Entity 객체를 DTO로 변환해서 응답하는 클래스
+public class MembersResponseDto {
 
     private Long id;
     private String userId;

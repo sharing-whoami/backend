@@ -12,21 +12,21 @@ import java.time.Duration;
 public class RedisService {
     private final RedisTemplate redisTemplate;
 
-    // 키-벨류 설정
+    // NOTE : 키-벨류 설정
     public void setValues(String token, String userId){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         System.out.println("setValues : " + token + userId);
         values.set(token, userId, Duration.ofMinutes(3));  // 3분 뒤 메모리에서 삭제된다.
     }
 
-    // 키값으로 벨류 가져오기
+    // NOTE : 키값으로 벨류 가져오기
     public String getValues(String token){
         ValueOperations<String, String> values = redisTemplate.opsForValue();
         System.out.println("getValue: " + token);
         return values.get(token);
     }
 
-    // 키-벨류 삭제
+    // NOTE : 키-벨류 삭제
     public void delValues(String token) {
         System.out.println("delvalues : "+ token);
         redisTemplate.delete(token);

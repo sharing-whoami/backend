@@ -11,7 +11,7 @@ import whoami.core.domain.members.Members;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 변환
+public class MembersSaveRequestDto {
     private String userId;
     private String password;
     private String name;
@@ -35,7 +35,6 @@ public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 �
         this.profile = profile;
     }
 
-    // dto인 MembersSaveRequestDto의 객체를 Members의 Entity 객체로 변환하기 위한 메서드
     public Members toEntity(){
         return Members.builder()
                 .userId(userId)

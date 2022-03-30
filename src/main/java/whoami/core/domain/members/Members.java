@@ -10,12 +10,11 @@ import java.util.Collection;
 
 
 @Getter
-@Entity // ==table
-// jpa의 entity 및 column은 자동으로 camel case -> DB의 snake_case에 매칭시켜줌
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 불완전한 객체 생성을 막아주는 역할
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "userId")
 @Table(name="members")
-public class Members implements UserDetails { //SpringSecurity는 UserDetails 객체를 통해 권한 정보를 관리
+public class Members implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
@@ -72,7 +71,7 @@ public class Members implements UserDetails { //SpringSecurity는 UserDetails �
         this.profile=profile;
     }
 
-    // 유저의 권한 목록
+    // NOTE : 유저의 권한 목록
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collectors = new ArrayList<>();
@@ -85,25 +84,25 @@ public class Members implements UserDetails { //SpringSecurity는 UserDetails �
         return getUserId();
     }
 
-    // 계정 만료 여부
+    // NOTE : 계정 만료 여부
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    // 계정 잠김 여부
+    // NOTE : 계정 잠김 여부
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
-    // 비밀번호 만료 여부
+    // NOTE : 비밀번호 만료 여부
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
-    // 사용자 활성화 여부
+    // NOTE : 사용자 활성화 여부
     @Override
     public boolean isEnabled() {
         return true;
