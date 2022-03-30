@@ -13,18 +13,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @RequiredArgsConstructor
 @Configuration
-@EnableWebSecurity // Spring Security 설정들 활성화 시켜줌
-// 특정 주소로 접근하면 권한 및 인증을 미리 체크하기 위해 사용
+@EnableWebSecurity
+// NOTE : 특정 주소로 접근하면 권한 및 인증을 미리 체크하기 위해 사용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 암호화에 필요한 PasswordEncoder 를 Bean 등록합니다.
+    // NOTE : 암호화에 필요한 PasswordEncoder 를 Bean 등록합니다.
     @Bean
     public BCryptPasswordEncoder Encoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // authenticationManager를 Bean 등록합니다.
+    // NOTE : authenticationManager를 Bean 등록합니다.
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -48,7 +48,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true);
-        // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
     }
 
 }

@@ -116,8 +116,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter  { // GenericFilterBean
-    // JwtTokenProvider.java 컴포넌트를 이용하는 것은 인증 작업을 진행하는 Filter
+public class JwtAuthenticationFilter extends OncePerRequestFilter  {
+    // NOTE :  JwtTokenProvider.java 컴포넌트를 이용하는 것은 인증 작업을 진행하는 Filter
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override

@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisConfig {
 
-    @Value("${spring.redis.port}") // application.yaml 에 설정한 값을 @Value 어노테이션으로 주입
+    @Value("${spring.redis.port}")
     private int port;
 
     @Value("${spring.redis.host}")
@@ -28,7 +28,6 @@ public class RedisConfig {
     public RedisTemplate<?, ?> redisTemplate() {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
-        // 일반적인 key:value의 경우 시리얼 라이저
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;

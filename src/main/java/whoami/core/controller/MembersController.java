@@ -28,15 +28,15 @@ public class MembersController {
     private final RedisService redisService;
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 회원가입 완료
-    @PostMapping("/users/signup") // 회원가입 api
+    // NOTE : 회원가입
+    @PostMapping("/users/signup")
     public String joinMember(@RequestBody MembersSaveRequestDto requestDto) {
         if (memberService.joinMember(requestDto) != null) {
-            return "회원가입 완료"; // return "redirect:/login"; -> 페이지 이동
+            return "회원가입 완료";
         }
-        return "중복되는 아이디가 있습니다."; // return "redirect:/users/signup"; -> 페이지 이동
+        return "중복되는 아이디가 있습니다.";
     }
-    // 로그인 완료 -> 동작 확인함.
+    // NOTE : 로그인
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto requestDto, HttpServletRequest request,
                                    HttpServletResponse response){
@@ -49,7 +49,7 @@ public class MembersController {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
     }
-    // 로그아웃
+    // FIXME : 로그아웃 로직 변경
     @GetMapping("/api/logout")
     public ResponseEntity logout(HttpServletRequest request) {
         System.out.println("logout : " + request.getHeader("refreshToken"));
@@ -57,6 +57,7 @@ public class MembersController {
         return ResponseEntity.ok().body("로그아웃 성공!");
     }
 
+    // NOTE : user test
     @PostMapping("/users/test")
     public Map userResponseTest() {
         Map<String, String> result = new HashMap<>();
@@ -64,6 +65,7 @@ public class MembersController {
         return result;
     }
 
+    // NOTE : admin test
     @PostMapping("/admin/test")
     public Map adminResponseTest() {
         Map<String, String> result = new HashMap<>();

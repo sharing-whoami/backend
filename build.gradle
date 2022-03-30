@@ -13,22 +13,32 @@ repositories {
 }
 
 dependencies {
+	// NOTE : jwt 토큰
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security' // Springboot Security
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// NOTE : Springboot Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// NOTE : Unit TEST
 	implementation 'junit:junit:4.13.2'
 	implementation 'com.h2database:h2'
-	implementation 'org.springframework.boot:spring-boot-starter-validation' // 회원가입 중복 확인
+
+	// NOTE : 회원가입 중복 확인
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// NOTE : lombok 설정
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.projectlombok:lombok'
 	annotationProcessor('org.projectlombok:lombok')
 	testAnnotationProcessor('org.projectlombok:lombok')
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
-	// JPA - MySQL 연동
+	// NOTE : JPA - MySQL 연동
    implementation 'mysql:mysql-connector-java'
    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//redis
+	// NOTE : redis 설정값
 	implementation "org.springframework.boot:spring-boot-starter-data-redis"
 }
 
