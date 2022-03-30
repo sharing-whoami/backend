@@ -5,18 +5,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import whoami.core.domain.Role;
 import whoami.core.domain.members.Members;
 import whoami.core.domain.members.MembersRepository;
+import whoami.core.dto.members.LoginRequestDto;
+import whoami.core.dto.members.LoginResponseDto;
 import whoami.core.dto.members.MembersSaveRequestDto;
 import whoami.core.dto.members.MembersUpdateRequestDto;
+import whoami.core.security.JwtTokenProvider;
 
-@RequiredArgsConstructor
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
     private final MembersRepository membersRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final RedisService redisService;
 
     // 스프링 시큐리티에서 유저를 찾는 메소드
     @Override
@@ -37,6 +46,26 @@ public class MemberService implements UserDetailsService {
         }
         return null;
     }
+
+    // 로그인
+    public LoginResponseDto loginUser(LoginRequestDto loginRequestDto) {
+        Optional<Members> members = membersRepository.findByUserId(loginRequestDto.getUserId());
+        System.out.println(loginRequestDto.getUserId()+"hello");
+        System.out.println(members);
+        System.out.println(members.get().getUserId() + loginRequestDto.getUserId());
+        Members member = membersRepository.findByUserId(loginRequestDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 회원아이디 입니다."));
+        if (!passwordEncoder.matches(loginRequestDto.getPassword(), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        String accessToken = jwtTokenProvider.createToken(loginRequestDto.getUserId(),loginRequestDto.getPassword());
+        String refreshToken=jwtTokenProvider.createRefreshToken(loginRequestDto.getUserId(),loginRequestDto.getPassword());
+        // refreshToken db에 저장하는 곳!!
+        redisService.setValues(refreshToken, loginRequestDto.getUserId());
+        return new LoginResponseDto(accessToken,refreshToken);
+    }
+
+    // 로그아웃
 
     // 회원 조회
     @Transactional

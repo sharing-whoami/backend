@@ -35,11 +35,6 @@ public class MembersSaveRequestDto { // RequestDto 객체를 Entity 객체로 �
         this.profile = profile;
     }
 
-//    private String bCryptPasswordEncoder(String password) {
-//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-//        return bCryptPasswordEncoder.encode(password);
-//    }
-
     // dto인 MembersSaveRequestDto의 객체를 Members의 Entity 객체로 변환하기 위한 메서드
     public Members toEntity(){
         return Members.builder()
