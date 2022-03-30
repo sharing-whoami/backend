@@ -46,10 +46,10 @@ public class MembersRepositoryTest {
                 .profile(profile)
                 .build());
 
-        // when
+        // NOTE : when
         List<Members> membersList=membersRepository.findAll();
 
-        // then
+        // NOTE : then
         Members members=membersList.get(0);
         assertThat(members.getUserId()).isEqualTo(userId);
         assertThat(members.getEmail()).isEqualTo(email);
