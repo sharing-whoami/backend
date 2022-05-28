@@ -245,6 +245,7 @@ KEY : accessToken
 VALUE : 로그인 시 얻은 인증 토큰
 
 2) Body
+
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
 | answerContents |  String  | 답글 내용       |
@@ -265,6 +266,7 @@ KEY : accessToken
 VALUE : 로그인 시 얻은 인증 토큰
 
 2) Body
+
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
 | answerContents |  String  | 수정할 답글 내용  |
@@ -377,10 +379,9 @@ KEY : accessToken
 VALUE : 로그인 시 얻은 인증 토큰
 
 2) Body
+
 | Parameter |  Type  | Description |
-
 |-----------|:------:|-------------|
-
 | commentContents |  String  | 댓글 내용 |
 
 #### 3.2.3. Response
@@ -399,10 +400,9 @@ KEY : accessToken
 VALUE : 로그인 시 얻은 인증 토큰
 
 2) Body
+
 | Parameter |  Type  | Description |
-
 |-----------|:------:|-------------|
-
 | commentContents |  String  | 수정할 댓글 내용  |
 
 #### 3.3.3. Response
@@ -476,27 +476,18 @@ GET : /question/{startDate}/{endDate}
 startDate와 endDate가 없을 경우 모든 data 반환
 
 | Parameter |  Type  | Description |
-
 |-----------|:------:|-------------|
-
 | startDate | Datetime | 검색 날짜 시작일   |
-
 | endDate   | Datetime | 검색 날짜 마지막일  |
-
 
 #### 4.1.3. Response  
 data의 배열  
 
 | Parameter |   Type   | Description |
-
 |-----------|:--------:|-------------|
-
 | articleId |  Number  | 질문 번호       |
-
 | contents  |  String  | 질문 내용       |
-
 | date      | Datetime | 질문 날짜       |
-
 
 #### 4.1.4. Http Code  
 - 200 : 성공
@@ -508,22 +499,15 @@ POST : /question
 #### 4.2.2. Request
 
 | Parameter |   Type   | Description |
-
 |-----------|:--------:|-------------|
-
 | date      | Datetime | 질문 날짜       |
-
 | contents  |  String  | 질문 내용       |
-
 
 #### 4.2.3. Response
 
 | Parameter  |   Type   | Description |
-
 |------------|:--------:|-------------|
-
 | questionId |  Number  | 생성된 질문 id   |
-
 
 #### 4.2.4. Http Code
 - 200 : 성공
@@ -539,11 +523,8 @@ DELETE : /question/{questionId}
 #### 4.3.2. Request
 
 | Parameter  |   Type   | Description |
-
 |------------|:--------:|-------------|
-
 | questionId |  Number  | 질문 id       |
-
 
 #### 4.3.3. Response
 없음
@@ -561,15 +542,10 @@ PATCH : /question/{questionId}
 #### 4.4.2. Request
 
 | Parameter  |   Type   | Description |
-
 |------------|:--------:|-------------|
-
 | questionId |  Number  | 질문 id       |
-
 | date       | Datetime | 질문 날짜       |
-
 | contents   |  String  | 질문 내용       |
-
 
 #### 4.4.3. Response
 없음
