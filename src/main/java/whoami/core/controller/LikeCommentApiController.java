@@ -16,17 +16,6 @@ import java.util.Optional;
 @RestController
 public class LikeCommentApiController {
     private final LikeCommentService likeCommentService;
-
-    // 좋아요 count
-    @GetMapping("/likeComment/{commentId}")
-    public ResponseEntity<List<String>> getLikeCount(@PathVariable Long commentId){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Member> userDetails = (Optional<Member>)principal;
-        Member loginMember = userDetails.get();
-        List<String> resultData = likeCommentService.count(commentId, loginMember);
-        return new ResponseEntity<>(resultData, HttpStatus.OK);
-    }
-
     // 좋아요 취소
     @DeleteMapping("/likeComment/{commentId}")
     public ResponseEntity<String> cancelLike(@PathVariable Long commentId){
