@@ -1,26 +1,24 @@
-package whoami.core.domain.members;
-
+package whoami.core.domain.member;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "userId")
-@Table(name="members")
-public class Members implements UserDetails {
+@Table(name="member")
+public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Long memberId;
 
-    @Column(nullable = false, unique = true,name="user_id")
+    @Column(nullable = false, unique = true, name="user_id")
     private String userId;
 
     @Column(nullable = false)
@@ -48,7 +46,8 @@ public class Members implements UserDetails {
     private String profile;
 
     @Builder
-    public Members(String userId, String password, String name, String registryNum, String phoneNum, String email, boolean isReceiveNotification, String role, String profile) {
+//    @JsonCreator
+    public Member(String userId, String password, String name, String registryNum, String phoneNum, String email, boolean isReceiveNotification, String role, String profile) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -65,6 +64,9 @@ public class Members implements UserDetails {
         this.phoneNum=phoneNum;
         this.email=email;
         this.isReceiveNotification=isReceiveNotification;
+    }
+    public void update(String profile){
+        this.profile=profile;
     }
 
     public void profileUpdate(String profile){
