@@ -1,18 +1,20 @@
-package whoami.core.dto.members;
-
+package whoami.core.dto.member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class LogoutRequestDto {
-    String refreshToken;
+    private String accessToken;
+    private String refreshToken;
 
     @Builder
-    public LogoutRequestDto(String refreshToken) {
+    public LogoutRequestDto(String accessToken, String refreshToken) {
+        this.accessToken=accessToken;
         this.refreshToken = refreshToken;
     }
 }
