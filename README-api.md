@@ -200,11 +200,21 @@ DELETE :/follow/{followedId}/{followingId}
 - 200 : Ok
 - 401 : Unauthorized (로그인이 되어 있지 않아 팔로우 기능에 대한 접근을 차단함)
 
-## 2. ARTICLE
-### 2.1. 답글 조회
-#### 2.1.1. GET /answers/list/{userId}
+## 2. answer
+### 2.1. 로그인 한 user의 전체 답글 조회
+#### 2.1.1. GET /answer/list
 #### 2.1.2. Request
-userId가 없을 경우 모든 data 반환
+
+1) Headers
+      KEY       |     VALUE
+:-------------: | :-------------:
+accessToken     | 로그인 시 얻은 인증토큰
+
+2) Body
+없음
+
+
+2) Body
 | Parameter |  Type  | Description |
 |-----------|:------:|-------------|
 | userId |  Number  | 회원 번호       |
