@@ -21,15 +21,19 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "answer_id")
     private Long answerId;
 
+    @Column(name = "upper_comments_id")
+    private Long upperCommentsId;
+
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @Builder
-    public Comment(Long commentId, String commentContents, Long answerId, Member member){
+    public Comment(Long commentId, String commentContents, Long answerId, Long upperCommentsId, Member member){
         this.commentId = commentId;
         this.commentContents = commentContents;
         this.answerId = answerId;
+        this.upperCommentsId = upperCommentsId;
         this.member = member;
     }
 
