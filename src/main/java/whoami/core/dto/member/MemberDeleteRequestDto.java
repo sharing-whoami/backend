@@ -1,8 +1,5 @@
 package whoami.core.dto.member;
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream/master
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProfileUploadRequestDto {
+public class MemberDeleteRequestDto {
     private String userId;
-    private String dirName="profile";
 
-    public ProfileUploadRequestDto(String userId) {
+    @Builder
+    public MemberDeleteRequestDto(String userId) {
         this.userId = userId;
     }
 }
