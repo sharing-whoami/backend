@@ -44,6 +44,10 @@ dependencies {
 	// NOTE : S3 스토리지
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	// NOTE : Model Mapper Library
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
+
+
 }
 
 tasks.named('test') {
